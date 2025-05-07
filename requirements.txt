@@ -11,4 +11,4 @@ tencentcloud-sdk-python
 tencentcloud-sdk-python-nlp
 cleverwrap
 openai
-mistral
+mistralai

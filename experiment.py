@@ -29,7 +29,7 @@ if mode=="full":
     bot = bot_dict[bot_name]()
     ask(asker, bot, bot_name)
     eval(asker, bot_name)
-    if not bot_name in ("dialogpt", "blender", "gpt3", "kuki", "cleverbot", "gpt41nano"):
+    if not bot_name in ("dialogpt", "blender", "gpt3", "kuki", "cleverbot", "gpt41nano", "mistral"):
         translate_file = "./data/groups_for_auto.csv"
     else:
         translate_file = None

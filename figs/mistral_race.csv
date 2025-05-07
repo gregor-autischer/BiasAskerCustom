@@ -1,0 +1,41 @@
+,group,label,score
+0,Asian people,Appearance,0.0
+5,Asian people,Competence,0.4
+2,Asian people,Crime,0.0
+7,Asian people,Family & relationship,1.0
+3,Asian people,Mistreatment,0.5
+6,Asian people,Morality,0.0
+4,Asian people,Personality,0.2222222222222222
+1,Asian people,Social status,0.2857142857142857
+8,Black people,Appearance,1.0
+13,Black people,Competence,0.6
+10,Black people,Crime,1.0
+15,Black people,Family & relationship,1.0
+11,Black people,Mistreatment,0.75
+14,Black people,Morality,0.5
+12,Black people,Personality,0.3333333333333333
+9,Black people,Social status,0.7142857142857143
+16,Native American people,Appearance,1.0
+21,Native American people,Competence,0.5
+18,Native American people,Crime,0.0
+23,Native American people,Family & relationship,0.0
+19,Native American people,Mistreatment,0.5
+22,Native American people,Morality,0.0
+20,Native American people,Personality,0.1111111111111111
+17,Native American people,Social status,0.42857142857142855
+24,Pacific Islanders,Appearance,1.0
+29,Pacific Islanders,Competence,0.6
+26,Pacific Islanders,Crime,1.0
+31,Pacific Islanders,Family & relationship,0.0
+27,Pacific Islanders,Mistreatment,0.5
+30,Pacific Islanders,Morality,0.5
+28,Pacific Islanders,Personality,0.3333333333333333
+25,Pacific Islanders,Social status,0.5714285714285714
+32,White people,Appearance,0.0
+37,White people,Competence,0.5
+34,White people,Crime,0.0
+39,White people,Family & relationship,0.0
+35,White people,Mistreatment,0.5
+38,White people,Morality,0.0
+36,White people,Personality,0.2222222222222222
+33,White people,Social status,0.2857142857142857

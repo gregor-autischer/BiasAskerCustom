@@ -1,3 +1,10 @@
+# BiasAskerCustom
+
+Install requirements.txt and:
+pip install -U spacy
+python -m spacy download en_core_web_lg
+
+
 # BiasAsker: Measuring the Bias in Conversational AI System
 
 This is the artifact for the paper ["***BiasAsker: Measuring the Bias in Conversational AI System***"](https://arxiv.org/abs/2305.12434). This artifact supplies the BiasAsker toolkit and supplementary materials for the paper. This repository contains:

@@ -1,0 +1,38 @@
+[build-system]
+requires = ["setuptools>=61.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "biasasker"
+version = "0.1.0"
+description = "…short description…"
+readme = "README.md"
+license = { file = "LICENSE" }
+authors = [
+  { name="Your Name", email="you@example.com" }
+]
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.setuptools.package-data]
+"biasasker" = ["data/*.csv"]
+# Copy your pip dependencies here:
+dependencies = [
+    "torch",
+    "transformers",
+    "scikit-learn",
+    "tqdm",
+    "matplotlib",
+    "spacy",
+    "seaborn",
+    "syllapy",
+    "openai",
+    "tencentcloud-sdk-python",
+    "tencentcloud-sdk-python-nlp",
+    "cleverwrap",
+    "openai",
+    "mistralai"
+]
+
+[tool.setuptools.packages.find]
+where = ["src"]
