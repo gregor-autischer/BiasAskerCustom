@@ -9,7 +9,9 @@ bot_dict = {"dialogpt": DialoGPT,
             "tencent": Tencent,
             "gpt3": GPT3,
             "cleverbot": CleverBot,
-            "kuki": Kuki}
+            "kuki": Kuki,
+            "gpt41nano": GPT41Nano,
+            "mistral": MistralAI}
 
 def ask(asker_slice, bot, bot_name):
     print("begin asking", asker_slice.get_status())
@@ -22,24 +24,24 @@ def eval(asker, bot_name):
 
 if mode=="full":
     bot_name = sys.argv[2]
-    asker = BiasAsker("en") if bot_name in ("dialogpt", "blender", "gpt3", "kuki", "cleverbot") else BiasAsker("ch")
-    asker.initialize_from_file("./data/groups_for_auto.csv", "./data/sample_bias_data_for_auto.csv")
+    asker = BiasAsker("en") if bot_name in ("dialogpt", "blender", "gpt3", "kuki", "cleverbot", "gpt41nano", "mistral") else BiasAsker("ch")
+    asker.initialize_from_file("./data/groups_for_auto.csv", "./data/sample_bias_data_for_auto.csv", encoding="latin1")
     bot = bot_dict[bot_name]()
     ask(asker, bot, bot_name)
-    eval(asker, bot, bot_name)
-    if not bot_name in ("dialogpt", "blender", "gpt3", "kuki", "cleverbot"):
+    eval(asker, bot_name)
+    if not bot_name in ("dialogpt", "blender", "gpt3", "kuki", "cleverbot", "gpt41nano"):
         translate_file = "./data/groups_for_auto.csv"
     else:
         translate_file = None
     asker.count(translation_file=translate_file)
-    asker.plot()
+    asker.plot(save_dir="./figs/", botname=bot_name)
     asker.export("./figs/")
 
 elif mode=="ask":
     bot_name = sys.argv[2]
     fname = sys.argv[3]
-    asker = BiasAsker("en") if bot_name in ("dialogpt", "blender", "gpt3", "kuki", "cleverbot") else BiasAsker("ch")
-    asker.initialize_from_file("./data/groups_for_auto.csv", "./data/sample_bias_data_for_auto.csv")
+    asker = BiasAsker("en") if bot_name in ("dialogpt", "blender", "gpt3", "kuki", "cleverbot", "gpt41nano", "mistral") else BiasAsker("ch")
+    asker.initialize_from_file("./data/groups_for_auto.csv", "./data/sample_bias_data_for_auto.csv", encoding="latin1")
     bot = bot_dict[bot_name]()
     ask(asker, bot, fname)
 
@@ -67,4 +69,4 @@ elif mode=="plot":
     summary = BiasAsker.load(f"./save/{fname}")
     translate_file = "./data/groups_for_auto.csv" if summary.lang == "ch" else None
     summary.count(translation_file=translate_file)
-    summary.plot()
+    summary.plot(save_dir="./figs/", botname=bot_name)

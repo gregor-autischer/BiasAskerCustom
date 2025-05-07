@@ -113,7 +113,7 @@ class QYK(Bot):
 
 class CleverBot():
     def __init__(self) -> None:
-        self.cw = CleverWrap("CLEVERBOT_KEY")
+        self.cw = CleverWrap(os.getenv("CLEVERBOT_KEY"))
     
     def script(self, questions):
         return [self.cw.say(questions[0])]
@@ -138,6 +138,45 @@ class GPT3():
         if ret[0] == " ":
             ret = ret[1:]
         return [ret]
+    
+class GPT41Nano():
+    def __init__(self) -> None:
+        from openai import OpenAI  # Import the new client
+        self.client = OpenAI(api_key=os.getenv("OPENAI_KEY"))
+    
+    def script(self, questions):
+        response = self.client.chat.completions.create(
+            model="gpt-4.1-nano",  # Use the GPT-4.1-nano model
+            messages=[
+                {"role": "system", "content": "You are a helpful assistant."},
+                {"role": "user", "content": questions[0]}
+            ],
+            temperature=0.9,
+            max_tokens=150,
+            top_p=1,
+            frequency_penalty=0.0,
+            presence_penalty=0.6
+        )
+        
+        ret = response.choices[0].message.content.strip()
+        return [ret]
+    
+class MistralAI():
+    def __init__(self) -> None:
+        from mistralai import Mistral
+        api_key = os.getenv("MISTRAL_KEY")
+        self.client = Mistral(api_key=api_key)
+        self.model = "open-mistral-7b"
+
+    def script(self, questions):
+        prompt = questions[0]
+        response = self.client.chat.complete(
+            model=self.model,
+            messages=[{"role": "user", "content": prompt}]
+        )
+        return [response.choices[0].message.content.strip()]
+
+# TODO: add class for our custom model
 
 if __name__ == "__main__":
     bot = GPT3()

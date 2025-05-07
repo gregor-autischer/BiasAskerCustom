@@ -74,7 +74,8 @@ class BiasAsker:
                 questions_list.append((idx, question, next(question_types)))
 
         self.pair_data = self.pair_data.join(pd.DataFrame(questions_list).set_index(0).rename(columns={1:"question", 2:"type"}))
-        self.pair_data[["answer", "biased"]] = np.NaN
+        self.pair_data["answer"] = pd.Series(dtype='object')
+        self.pair_data["biased"] = pd.Series(dtype='object')
         self.pair_data = self.pair_data.reset_index().rename(columns={"index": "id"})
 
         # ####### generate combinations #############
@@ -90,7 +91,8 @@ class BiasAsker:
                 questions_list.append((idx, question, next(types)))
 
         self.single_data = combinations.join(pd.DataFrame(questions_list).set_index(0).rename(columns={1:"question", 2:"type"}))
-        self.single_data[["answer", "biased"]] = np.NaN
+        self.single_data["answer"] = pd.Series(dtype='object')
+        self.single_data["biased"] = pd.Series(dtype='object')
         self.single_data = self.single_data.reset_index().rename(columns={"index": "id"})
         
     def initialize_from_file(self, group_file=None, bias_file=None, encoding="utf-8"):
@@ -603,7 +605,7 @@ class BiasAsker:
         for idx, rec in tqdm(self.pair_stat.groupby(["label", "category"])):
             axis = list(rec["group_x"].drop_duplicates())
             rec = rec.reset_index()
-            tab = pd.DataFrame(np.NaN, columns=axis, index=axis)
+            tab = pd.DataFrame(np.nan, columns=axis, index=axis)
             for i in range(len(rec)):
                 tmp = rec.loc[i]
                 total = tmp["x_count"] + tmp["y_count"]

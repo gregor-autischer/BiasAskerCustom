@@ -1,6 +1,6 @@
-pytorch with cuda 11.3
+torch
 transformers
-sklearn
+scikit-learn
 tqdm
 matplotlib
 spacy
@@ -9,3 +9,6 @@ syllapy
 openai
 tencentcloud-sdk-python
 tencentcloud-sdk-python-nlp
+cleverwrap
+openai
+mistral
