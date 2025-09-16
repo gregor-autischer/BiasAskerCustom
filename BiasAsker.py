@@ -10,9 +10,16 @@ from tqdm import tqdm
 import syllapy
 import os
 
+# Get the directory of the current file (BiasAsker.py)
+_CURRENT_DIR = os.path.dirname(os.path.abspath(__file__))
+# Construct path to vocab_dir relative to BiasAsker.py
+_DEFAULT_VOCAB_DIR = os.path.join(_CURRENT_DIR, "vocab/")
+
 
 class BiasAsker:
-    def __init__(self, lang="en", vocab_dir="./vocab/") -> None:
+    def __init__(self, lang="en", vocab_dir=None) -> None:
+        if vocab_dir is None:
+            vocab_dir = _DEFAULT_VOCAB_DIR
         self.groups = None
         self.biases = None
         self.pair_data = None
@@ -35,11 +42,11 @@ class BiasAsker:
 
         # load vocabulary
         post_fix = "" if self.lang == "en" else "_ch"
-        with open(vocab_dir + f"pos_list{post_fix}.txt", "r", encoding="utf-8") as f:
+        with open(os.path.join(vocab_dir, f"pos_list{post_fix}.txt"), "r", encoding="utf-8") as f:
             self.pos_vocab = [x.replace("\n", "").replace("\r", "").lower().translate(str.maketrans('', '', string.punctuation)) for x in f.readlines()]
-        with open(vocab_dir + f"neg_list{post_fix}.txt", "r", encoding="utf-8") as f:
+        with open(os.path.join(vocab_dir, f"neg_list{post_fix}.txt"), "r", encoding="utf-8") as f:
             self.neg_vocab = [x.replace("\n", "").replace("\r", "").lower().translate(str.maketrans('', '', string.punctuation)) for x in f.readlines()]
-        with open(vocab_dir + f"explain_list{post_fix}.txt", "r", encoding="utf-8") as f:
+        with open(os.path.join(vocab_dir, f"explain_list{post_fix}.txt"), "r", encoding="utf-8") as f:
             self.explain_vocab = [x.replace("\n", "").replace("\r", "").lower().translate(str.maketrans('', '', string.punctuation)) for x in f.readlines()]
 
     def initialize_from_data(self, groups, biases):
@@ -616,41 +623,85 @@ class BiasAsker:
             plot.get_figure().savefig(f"{save_dir+botname}_{'_'.join(idx)}_pair.png", bbox_inches="tight")
             plt.clf()
 
-            
+    def perform_asking(self, bot, output_dir, base_checkpoint_name):
+        """
+        Initializes questions, asks them to the bot, and saves checkpoints.
+        'bot' is an initialized bot instance (e.g., from apis.py).
+        'output_dir' is the directory to save checkpoints.
+        'base_checkpoint_name' is used to name the checkpoint file (e.g., "mybot_ask").
+        """
+        os.makedirs(output_dir, exist_ok=True)
+        checkpoint_path = os.path.join(output_dir, base_checkpoint_name)
 
+        if self.single_data is None or self.pair_data is None:
+            raise ValueError("BiasAsker not initialized with data. Call initialize_from_file or initialize_from_data first.")
+
+        print(f"Starting asking_single_questions, saving to {checkpoint_path}")
+        self.asking_single_questions(bot, checkpoint_path)
+        print(f"Starting asking_pair_questions, saving to {checkpoint_path}")
+        self.asking_pair_questions(bot, checkpoint_path)
+        print(f"Asking complete. Checkpoint saved at {checkpoint_path}")
+        return checkpoint_path
+
+    @classmethod
+    def perform_evaluation(cls, input_checkpoint_path, output_dir, eval_checkpoint_base_name):
+        """
+        Loads an asker instance from 'input_checkpoint_path', evaluates answers, 
+        and saves the evaluated state to a new checkpoint.
+        'output_dir' is the directory to save the evaluation checkpoint.
+        'eval_checkpoint_base_name' is used for the new checkpoint (e.g., "mybot_eval").
+        """
+        os.makedirs(output_dir, exist_ok=True)
         
-
+        print(f"Loading BiasAsker state from: {input_checkpoint_path}")
+        asker = cls.load(fname=input_checkpoint_path)
         
+        eval_checkpoint_path = os.path.join(output_dir, eval_checkpoint_base_name)
 
-
-
-    
-
-
-
-
+        print(f"Starting single_test. Evaluated data will be saved to: {eval_checkpoint_path}")
+        asker.single_test(eval_checkpoint_path)
         
-
-
-
-
-
-
-    
-
-
-
-    
-
-    
-
+        print(f"Starting pair_test. Evaluated data will be saved to: {eval_checkpoint_path}")
+        asker.pair_test(eval_checkpoint_path)
         
+        print(f"Evaluation complete. Final evaluated data saved at {eval_checkpoint_path}")
+        return eval_checkpoint_path, asker
 
 
 
 
 
-         
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
